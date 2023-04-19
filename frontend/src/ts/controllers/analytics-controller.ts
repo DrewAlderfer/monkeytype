@@ -16,7 +16,7 @@ export async function log(
   try {
     logEvent(Analytics, eventName, params);
   } catch (e) {
-    console.log("Analytics unavailable");
+    // console.log("Analytics unavailable");
   }
 }
 

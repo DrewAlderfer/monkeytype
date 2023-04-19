@@ -63,6 +63,7 @@ export let hasTab = false;
 export let randomQuote = null as unknown as MonkeyTypes.Quote;
 
 export function setRandomQuote(rq: MonkeyTypes.Quote): void {
+  // console.log("setRandomQuote");
   randomQuote = rq;
 }
 

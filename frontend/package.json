@@ -9,7 +9,7 @@
     "dep-graph": "madge -c -i \"dep-graph.png\" ./src/ts",
     "build": "npx gulp build",
     "build-live": "export COMMIT_HASH=`git rev-parse --short HEAD` && npx gulp build-production",
-    "dev": "concurrently \"webpack serve --config=./webpack/config.dev.js\" \"npx gulp watch\"",
+    "dev": "concurrently \"webpack serve --client-logging verbose --config=./webpack/config.dev.js\" \"npx gulp watch\"",
     "deploy-live": "npm run build-live && firebase deploy -P live --only hosting",
     "tsc": "tsc"
   },

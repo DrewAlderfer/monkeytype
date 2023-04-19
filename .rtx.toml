@@ -1,0 +1,10 @@
+[env]
+NODE_ENV = 'monkeytype'
+
+[tools]
+nodejs = "16.13.2"
+
+python = {version='3.11', virtualenv='monkeytype'}
+
+[plugins]
+python = 'https://github.com/jdxcode/rtx-python'

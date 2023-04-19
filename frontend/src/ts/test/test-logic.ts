@@ -1109,6 +1109,7 @@ export async function init(): Promise<void> {
       } else {
         rq = targetQuote;
       }
+      // console.log("Selected Quote from Popup?");
     } else if (Config.quoteLength.includes(-3)) {
       const randomQuote = QuotesController.getRandomFavoriteQuote(
         Config.language
@@ -1122,6 +1123,7 @@ export async function init(): Promise<void> {
       }
 
       rq = randomQuote;
+      console.log("Config.quoteLength included -3?");
     } else {
       const randomQuote = QuotesController.getRandomQuote();
       if (randomQuote === null) {
@@ -1133,6 +1135,7 @@ export async function init(): Promise<void> {
       }
 
       rq = randomQuote;
+      console.log("Something else happened?");
     }
 
     if (rq === undefined) return;

@@ -1,4 +1,4 @@
-import { randomElementFromArray, shuffle } from "../utils/misc";
+import { randomElementFromArray } from "../utils/misc";
 import { subscribe } from "../observables/config-event";
 import * as DB from "../db";
 
@@ -37,13 +37,16 @@ class QuotesController {
   private quoteCollection: QuoteCollection = defaultQuoteCollection;
 
   private quoteQueue: MonkeyTypes.Quote[] = [];
-  private queueIndex = 0;
+  private queueIndex = 1;
+  private startIndex = 1;
+  private countIndex = 0;
 
   async getQuotes(
     language: string,
     quoteLengths?: number[]
   ): Promise<QuoteCollection> {
     const normalizedLanguage = normalizeLanguage(language);
+    // console.log("Start getQuotes");
 
     if (this.quoteCollection.language !== normalizedLanguage) {
       try {
@@ -97,22 +100,39 @@ class QuotesController {
         return defaultQuoteCollection;
       }
     }
-
+    // console.log("end getQuotes");
     return this.quoteCollection;
   }
 
   getQuoteById(id: number): MonkeyTypes.Quote | undefined {
+    console.log("start getQuoteByID");
+    console.log("        id = ", id);
+    console.log("     start = ", this.startIndex);
+    // console.log("queueIndex = ", this.queueIndex);
+    console.log("countIndex = ", this.countIndex);
+    if (id === this.startIndex) {
+      id += this.countIndex;
+    } else {
+      this.countIndex = 0;
+      this.startIndex = id;
+    }
+    console.log("  quote id = ", id);
     const targetQuote = this.quoteCollection.quotes.find(
       (quote: MonkeyTypes.Quote) => {
         return quote.id === id;
       }
     );
+    this.countIndex += 1;
+    console.log("end getQuoteById");
+    // console.log("id = ", id);
 
     return targetQuote;
   }
 
   updateQuoteQueue(quoteGroups: number[]): void {
     this.quoteQueue = [];
+    // console.log("Start updateQuoteQueue");
+    // console.log(this.queueIndex);
 
     quoteGroups.forEach((group) => {
       if (group < 0) {
@@ -123,8 +143,10 @@ class QuotesController {
       });
     });
 
-    shuffle(this.quoteQueue);
-    this.queueIndex = 0;
+    // console.log("end updateQuoteQueue");
+    // console.log(this.queueIndex);
+    // shuffle(this.quoteQueue);
+    // this.queueIndex += 1;
   }
 
   getRandomQuote(): MonkeyTypes.Quote | null {
@@ -134,13 +156,14 @@ class QuotesController {
 
     if (this.queueIndex >= this.quoteQueue.length) {
       this.queueIndex = 0;
-      shuffle(this.quoteQueue);
+      // shuffle(this.quoteQueue);
     }
 
     const randomQuote = this.quoteQueue[this.queueIndex];
 
-    this.queueIndex += 1;
-
+    // this.queueIndex += 1;
+    // console.log("getRandomQuote");
+    // console.log(this.queueIndex);
     return randomQuote;
   }
 
@@ -148,7 +171,8 @@ class QuotesController {
     if (this.quoteQueue.length === 0) {
       return null;
     }
-
+    // console.log("getCurrentQuote");
+    // console.log(this.queueIndex);
     return this.quoteQueue[this.queueIndex];
   }
 
@@ -173,9 +197,10 @@ class QuotesController {
     if (quoteIds.length === 0) {
       return null;
     }
-
+    // console.log("getRandomFavoriteQuote");
     const randomQuoteId = randomElementFromArray(quoteIds);
     const randomQuote = this.getQuoteById(parseInt(randomQuoteId, 10));
+    // console.log(randomQuoteId);
 
     return randomQuote ?? null;
   }
