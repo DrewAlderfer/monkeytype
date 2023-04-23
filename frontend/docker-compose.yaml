@@ -8,3 +8,5 @@ services:
     volumes:
       - ../:/monkeytype
     entrypoint: 'bash -c "cd /monkeytype && npm run dev-fe"'
+    environment:
+      - HOME=/home/drew/code/monkeytype
